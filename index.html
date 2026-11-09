@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Actividad guiada: funciones en Python mediante un inventario de esmeraldas inspirado en Minecraft.">
+  <title>Misión Esmeralda | Funciones en Python</title>
+  <style>
+    :root {--ink:#eaf5ec;--paper:#f5f8f1;--muted:#a9bcae;--background:#0c1b19;--panel:#162b25;--panel2:#203c2f;--line:#355845;--green:#72d65e;--lime:#b7e67c;--gold:#edca66;--darkgreen:#0c3224;--red:#e8897d;--shadow:0 18px 48px rgba(2,19,12,.23)}
+    *,*::before,*::after {box-sizing:border-box}
+    html {scroll-behavior:smooth;scroll-padding-top:84px}
+    body {margin:0;background:var(--paper);font-family:'Segoe UI',Tahoma,Arial,sans-serif;color:#213129;line-height:1.6}
+    button,a { -webkit-tap-highlight-color:transparent }
+    button {font:inherit;cursor:pointer}
+    a {color:inherit}
+    :focus-visible {outline:3px solid #f7c963;outline-offset:3px}
+    .topbar {position:sticky;top:0;z-index:10;backdrop-filter:blur(12px);background:rgba(10,26,20,.96);border-bottom:3px solid #416c40;color:var(--ink)}
+    .topbar-inner {max-width:1180px;margin:auto;min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 24px}
+    .brand {display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.025em;text-decoration:none;font-size:15px}
+    .brand-cube {height:29px;width:29px;background:linear-gradient(135deg,#94df71 0 44%,#396b3e 45%);border:3px solid #172c24;box-shadow:3px 3px 0 #4fa04b;transform:rotate(-8deg)}
+    .topnav {display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+    .topnav a {border-radius:6px;padding:8px 12px;text-decoration:none;color:#c9decf;font-size:13px;font-weight:700}
+    .topnav a:hover,.topnav a:focus-visible {background:#244237;color:white}
+    .hero {background:radial-gradient(circle at 73% 15%,#3f6751 0%,#17392d 35%,#0b201d 70%);color:var(--ink);position:relative;overflow:hidden}
+    .hero:after {content:"";position:absolute;bottom:0;left:0;width:100%;height:18px;background:repeating-linear-gradient(90deg,#69b45a 0 32px,#4b8746 32px 64px);box-shadow:0 8px #76543b;}
+    .hero-inner {max-width:1180px;margin:auto;padding:76px 24px 81px;display:grid;grid-template-columns:1fr .88fr;gap:48px;align-items:center;position:relative;z-index:1}
+    .pixel-star {position:absolute;background:#b0e6a1;opacity:.3;box-shadow:7px 0 #b0e6a1,-7px 0 #b0e6a1,0 -7px #b0e6a1,0 7px #b0e6a1;height:6px;width:6px}
+    .s1 {top:18%;left:10%}.s2{top:33%;left:57%}.s3{top:70%;left:89%}
+    .eyebrow {display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:900;letter-spacing:.14em;color:#badba7;text-transform:uppercase}
+    .eyebrow:before{content:"";height:9px;width:9px;background:var(--green);box-shadow:3px 3px 0 #36733c}
+    h1 {margin:18px 0 16px;font-size:clamp(38px,5vw,64px);font-weight:950;letter-spacing:-.05em;line-height:1.04}
+    h1 span {color:#99ed74}
+    .hero-copy {color:#c0d5c8;font-size:17px;max-width:540px;margin:0 0 28px}
+    .chips {display:flex;flex-wrap:wrap;gap:9px;margin-bottom:27px}
+    .chip {padding:7px 10px;background:#234537;border:1px solid #42654d;border-radius:5px;color:#ddf2dd;font-weight:800;font-size:12px}
+    .btn {display:inline-flex;gap:9px;align-items:center;justify-content:center;text-align:center;text-decoration:none;border:0;border-radius:6px;padding:12px 16px;font-weight:900;transition:transform .15s,filter .15s;min-height:44px}
+    .btn:hover {transform:translateY(-2px);filter:brightness(1.06)}
+    .btn-primary {background:#a2e86e;color:#143322;box-shadow:0 4px 0 #4c8943}
+    .btn-muted {background:#314b3f;color:#e5f5e5;border:1px solid #53715a}
+    .btn-small {font-size:13px;padding:9px 13px;min-height:35px}
+    .hero-actions {display:flex;gap:12px;flex-wrap:wrap}
+    .demo {border:4px solid #496e52;background:#0a1816;box-shadow:0 14px 0 #05110f,0 20px 44px #06120d;position:relative;transform:rotate(1deg);border-radius:8px;overflow:hidden}
+    .demo-label {padding:9px 14px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;font-size:11px;color:#a5d8ad;border-bottom:2px solid #3d624a;background:#182c24;display:flex;justify-content:space-between}
+    .game-world {height:138px;position:relative;background:linear-gradient(#80cbd2 0 62%,#79b353 62% 70%,#644534 70%);overflow:hidden}
+    .game-world:before {content:"";position:absolute;background:#eaf2ce;width:48px;height:18px;top:24px;left:44px;box-shadow:16px -9px 0 #eaf2ce,24px 0 0 #eaf2ce,170px 17px 0 #eaf2ce,185px 8px 0 #eaf2ce}
+    .game-world:after {content:"";position:absolute;bottom:0;left:0;right:0;height:34px;background:repeating-linear-gradient(90deg,#6c513b 0 21px,#76543a 21px 42px);border-top:9px solid #4e9945}
+    .game-tree {position:absolute;width:22px;height:82px;right:47px;bottom:28px;background:#6b452f;z-index:1}
+    .game-tree:before {content:"";position:absolute;bottom:43px;left:-29px;background:#36854c;width:80px;height:56px;box-shadow:0 -22px 0 -8px #307745}
+    .game-avatar {position:absolute;left:52px;bottom:26px;width:35px;height:46px;background:#3866a6;z-index:2;border:7px solid #2b5475;border-top:16px solid #b88462;box-shadow:9px 0 0 #2a5994}
+    .gem {width:22px;height:29px;background:#4de6a9;clip-path:polygon(50% 0,100% 32%,100% 72%,50% 100%,0 72%,0 32%);border:0;filter:drop-shadow(1px 3px 0 #154e40);display:inline-block;vertical-align:middle}
+    .demo-body {padding:20px}
+    .score {display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px;background:#152e26;border:1px solid #3b614d;border-radius:7px;margin-bottom:13px}
+    .score-label {font-weight:800;font-size:13px;color:#cbded1}.score-number{font-family:Consolas,monospace;font-size:31px;color:#bbf49b;font-weight:900}
+    .demo-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .demo-actions button {background:#31513c;border:1px solid #5b855b;color:#f0ffec;font-size:13px;font-weight:900;border-radius:5px;padding:11px 6px;box-shadow:0 3px 0 #1e3529}
+    .demo-actions button:hover {background:#416d49}
+    .demo-feedback {margin-top:15px;min-height:41px;color:#d2efd1;font-size:13px;background:#162e23;border-left:3px solid #a0e680;padding:9px 12px}
+    .caption {display:block;color:#91b59b;margin-top:11px;font-size:11px}
+    main {max-width:1180px;margin:auto;padding:38px 24px 75px}
+    .introduction {display:flex;align-items:flex-start;gap:17px;background:#e7f0df;border:1px solid #bcd5ac;padding:20px 22px;border-radius:10px;margin-bottom:36px}
+    .intro-icon {width:47px;min-width:47px;height:47px;border-radius:8px;background:#266e40;color:#c8f1b9;display:grid;place-items:center;font-size:24px}
+    .introduction strong {display:block;font-size:16px;color:#21412a}
+    .introduction p {margin:4px 0 0;color:#476249;font-size:14px}
+    .section {padding-top:20px;margin-bottom:45px}
+    .section-heading {display:flex;align-items:center;gap:15px;margin-bottom:9px}
+    .step {color:white;background:#2d6541;font:900 18px Consolas,monospace;padding:9px 11px;box-shadow:4px 4px 0 #a6c6a0;border-radius:4px}
+    h2 {font-size:clamp(24px,3.1vw,36px);line-height:1.2;letter-spacing:-.035em;margin:0;color:#183629}
+    .section-description {margin:0 0 23px 61px;color:#596c61;max-width:850px}
+    .two-cols {display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .surface {background:white;border:1px solid #dce6d9;border-radius:12px;box-shadow:0 8px 28px rgba(22,48,28,.045);padding:25px}
+    .surface h3 {font-size:19px;margin:0 0 8px;letter-spacing:-.025em;color:#214532}
+    .surface p {color:#5a6d61;margin:0 0 14px;font-size:14px}
+    .tag {display:inline-block;font-size:11px;color:#28613d;border-radius:4px;background:#eaf6e5;padding:5px 7px;font-weight:900;letter-spacing:.075em;text-transform:uppercase;margin-bottom:12px}
+    .code-wrap {background:#101c1b;border-radius:8px;overflow:hidden;border:1px solid #294940;margin-top:14px}
+    .code-head {padding:8px 12px;background:#1b332c;color:#b9d3bf;display:flex;align-items:center;justify-content:space-between;gap:8px;font-family:Consolas,monospace;font-size:12px}
+    .copy-code {border:1px solid #567b5c;color:#daf1db;background:#294b38;border-radius:4px;font-size:12px;font-weight:800;padding:6px 8px}
+    .copy-code:hover {background:#386748}
+    pre {margin:0;padding:16px;max-width:100%;overflow:auto;tab-size:4;line-height:1.65;font:13px/1.65 Consolas,'Courier New',monospace;color:#dcebe5}
+    .question {font-weight:900;color:#1f4330;background:#f1f7e9;border-left:4px solid #4c9f48;padding:14px;border-radius:4px;font-size:14px}
+    .quiz-options {display:grid;gap:9px;margin-top:14px}
+    .quiz-option {text-align:left;background:#eff4ec;color:#2f4b37;border:1px solid #cbd9c8;padding:11px 12px;border-radius:6px;font-weight:700}
+    .quiz-option:hover {border-color:#538f52;background:#e2efdb}
+    .quiz-result {margin-top:12px;padding:12px;border:1px solid #a9d3a2;background:#edf8e8;color:#244a31;border-radius:6px;display:none;font-weight:700;font-size:13px}
+    .quiz-result.is-visible {display:block}
+    .visual-flow {display:flex;gap:10px;align-items:stretch;justify-content:center;margin:18px 0;flex-wrap:wrap}
+    .flow-part {flex:1 1 140px;min-width:130px;border:2px solid #b5d5b0;background:#ebf6e8;border-radius:8px;padding:16px 12px;text-align:center}
+    .flow-part small {display:block;font-size:10px;font-weight:900;letter-spacing:.1em;color:#4a7653;margin-bottom:8px}
+    .flow-part code {color:#24492c;font-size:12px;font-weight:900;overflow-wrap:anywhere}
+    .flow-arrow {display:grid;place-items:center;font-weight:950;font-size:20px;color:#49864c}
+    .mission-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .mission {padding:24px;background:white;border:1px solid #d7e4d5;border-radius:12px;display:flex;flex-direction:column;gap:9px;box-shadow:0 8px 26px rgba(22,48,28,.04)}
+    .mission-id {font:900 11px Consolas,monospace;letter-spacing:.1em;color:#287745;text-transform:uppercase}
+    .mission h3{font-size:20px;color:#1c3d28;line-height:1.25;margin:0}
+    .mission p{font-size:14px;color:#607466;margin:0}
+    .mission .task-req {background:#f3f7ee;border-radius:6px;padding:12px;font-size:13px;color:#32503b;line-height:1.55}
+    .mission .task-req strong {display:block;margin-bottom:4px}
+    details {margin-top:auto;border:1px solid #d2e4cc;border-radius:6px;background:#f6fbf3;overflow:hidden}
+    details summary {cursor:pointer;color:#32663e;padding:10px 12px;font-size:13px;font-weight:900}
+    details[open] summary {border-bottom:1px solid #d7e4ce}
+    .hint {padding:12px;font-size:13px;color:#4d6650}
+    .hint code {font-family:Consolas,monospace;color:#215638;font-weight:800;overflow-wrap:anywhere}
+    .table-scroll {overflow:auto}
+    table {border-collapse:collapse;width:100%;font-size:14px}
+    th,td {padding:12px 14px;border-bottom:1px solid #e2e8df;text-align:left}
+    th {background:#eaf2e3;color:#244d31;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+    td {color:#435a49}
+    td code {font-family:Consolas,monospace;font-size:12px;color:#275c37}
+    .notice {background:#fff6db;border:1px solid #dfcc94;border-left:5px solid #bf9541;color:#735e32;padding:14px 17px;border-radius:5px;font-size:13px;margin-top:18px}
+    .deliver {background:linear-gradient(135deg,#183c2b,#0e2c23);color:#e7f5e7;border-radius:13px;padding:28px;display:grid;grid-template-columns:1fr .64fr;gap:23px}
+    .deliver h3 {font-size:25px;color:#d0ffbc;margin:0 0 8px}
+    .deliver p{color:#bfd4c4;font-size:14px;margin:0 0 12px}
+    .checks {display:grid;gap:11px;margin:17px 0}
+    .check {display:flex;align-items:flex-start;gap:11px;padding:10px 12px;border:1px solid #42694c;border-radius:7px;background:#204534;cursor:pointer;font-size:13px;color:#dfefdc}
+    .check input{accent-color:#a3e679;width:17px;height:17px;flex:none;margin-top:2px}
+    .progress-box {align-self:start;padding:24px;background:#123327;border:1px solid #3c674a;border-radius:9px;text-align:center}
+    .progress-number {font:900 42px Consolas,monospace;color:#a7f083}
+    .progress-track {height:12px;background:#345b40;border-radius:30px;overflow:hidden;margin-top:12px}
+    .progress-fill {height:100%;width:0;background:#a4e77c;transition:width .25s}
+    .footer {background:#10271e;color:#96bea0;text-align:center;padding:24px;font-size:13px}
+    .footer a{color:#b7dfba}
+    .mini-note {font-size:12px;color:#6c7d70;margin-top:9px}
+    .source {text-decoration:none;color:#247046;font-weight:800}
+    @media (max-width:900px){.hero-inner{grid-template-columns:1fr;gap:33px;padding-top:54px}.demo{max-width:570px;transform:none}.mission-grid{grid-template-columns:1fr}.two-cols,.deliver{grid-template-columns:1fr}.topnav{display:none}}
+    @media (max-width:580px){.topbar-inner{padding:9px 16px}.hero-inner{padding:43px 16px 65px}.chips{gap:6px}.chip{font-size:11px}main{padding:25px 15px 60px}.section-description{margin-left:0}.section-heading{gap:10px}.surface{padding:17px}.flow-arrow{flex-basis:100%;height:14px;transform:rotate(90deg)}.deliver{padding:19px}.introduction{padding:17px}}
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+    @media print {.topbar,.hero-actions,.demo-actions,.copy-code,button,.footer{display:none!important}.hero{background:#e5efdc!important;color:#143b27}.hero-copy,.eyebrow{color:#143b27!important}.hero h1{color:#143b27}.demo{display:none}.hero-inner,.mission-grid,.two-cols,.deliver{display:block}.surface,.mission{margin:15px 0;break-inside:avoid}.section{break-before:auto}.deliver{background:#eaf5e6;color:#123b20}.deliver p{color:#123b20}body{background:white}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#inicio"><span class="brand-cube" aria-hidden="true"></span> PYTHON LAB <span style="color:#a2df87">/ MINECRAFT</span></a>
+      <nav class="topnav" aria-label="Secciones de la actividad">
+        <a href="#observar">El problema</a><a href="#descubrir">La solución</a><a href="#misiones">Misiones</a><a href="#pruebas">Entrega</a>
+      </nav>
+    </div>
+  </header>
+  <section class="hero" id="inicio">
+    <span class="pixel-star s1" aria-hidden="true"></span><span class="pixel-star s2" aria-hidden="true"></span><span class="pixel-star s3" aria-hidden="true"></span>
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">Misión 01 / Tu primer sistema con funciones</div>
+        <h1>OPERACIÓN<br><span>ESMERALDA</span></h1>
+        <p class="hero-copy">Un sistema de Minecraft funciona, pero repite instrucciones una y otra vez. Tu desafío será reorganizarlo usando <strong>funciones en Python</strong>.</p>
+        <div class="chips"><span class="chip">⏱ 60 minutos</span><span class="chip">🐍 Python</span><span class="chip">⚙ def · parámetros · return</span></div>
+        <div class="hero-actions"><a href="#observar" class="btn btn-primary">Comenzar misión ↓</a><a href="#misiones" class="btn btn-muted">Ver desafíos</a></div>
+      </div>
+      <aside class="demo" aria-label="Simulación ilustrativa del sistema de esmeraldas">
+        <div class="demo-label"><span>▶ VISTA PREVIA</span><span>SIMULACIÓN WEB</span></div>
+        <div class="game-world" aria-hidden="true"><div class="game-tree"></div><div class="game-avatar"></div></div>
+        <div class="demo-body">
+          <div class="score"><div><span class="score-label">INVENTARIO ACTUAL</span><div style="font-size:11px;color:#8fb9a0">Esmeraldas disponibles</div></div><div><span class="gem" aria-hidden="true"></span> <span class="score-number" id="gem-count" aria-live="polite">10</span></div></div>
+          <div class="demo-actions"><button id="collect" type="button">⛏ Recolectar +5</button><button id="buy" type="button">🪓 Comprar pico −8</button></div>
+          <div id="demo-feedback" class="demo-feedback" aria-live="polite">Prueba las acciones. Luego crearás algo parecido, pero en Python.</div>
+          <small class="caption">Esta simulación usa JavaScript para mostrar el objetivo; tu programa se escribe en Python, en tu editor.</small>
+        </div>
+      </aside>
+    </div>
+  </section>
+  <main>
+    <aside class="introduction"><div class="intro-icon" aria-hidden="true">🎯</div><div><strong>Objetivo de aprendizaje</strong><p>Aprender a organizar código repetido creando funciones, enviando datos mediante parámetros y devolviendo resultados con <code>return</code>. Trabaja en tu editor de Python: esta página es tu guía, no un entorno para programar.</p></div></aside>
+
+    <section class="section" id="observar">
+      <div class="section-heading"><span class="step">01</span><h2>Observá el problema</h2></div>
+      <p class="section-description">Antes de aprender una instrucción nueva, examiná un programa que ya funciona. ¿Encontrás algo que pueda mejorarse?</p>
+      <div class="two-cols">
+        <article class="surface">
+          <span class="tag">Código que funciona, pero se repite</span>
+          <h3>Inventario duplicado</h3>
+          <p>Mirás el inventario, recolectás y lo volvés a mostrar. El mismo bloque de instrucciones aparece dos veces.</p>
+          <div class="code-wrap"><div class="code-head"><span>antes.py</span><button class="copy-code" data-copy="codigo-repetido" type="button">Copiar</button></div><pre id="codigo-repetido"><code>esmeraldas = 10
+
+print("=== INVENTARIO ===")
+print("Esmeraldas:", esmeraldas)
+
+esmeraldas += 5
+
+print("=== INVENTARIO ===")
+print("Esmeraldas:", esmeraldas)</code></pre></div>
+          <div class="notice">No hay un error de ejecución: el problema es la <strong>repetición</strong>. Pensá qué ocurriría si este inventario se imprimiera en 15 lugares.</div>
+        </article>
+        <article class="surface">
+          <span class="tag">Conflicto cognitivo</span>
+          <h3>¿Modificarías 15 bloques?</h3>
+          <p>Queremos agregar el título <strong>«Inventario del jugador»</strong> cada vez que se muestran las esmeraldas.</p>
+          <div class="question">¿Cuál de estas opciones permitiría cambiar la presentación del inventario en un solo lugar?</div>
+          <div class="quiz-options" role="group" aria-label="Pregunta de predicción">
+            <button type="button" class="quiz-option" data-answer="a">A. Copiar el mismo bloque otras 15 veces.</button>
+            <button type="button" class="quiz-option" data-answer="b">B. Crear una acción reutilizable y llamarla cuando haga falta.</button>
+            <button type="button" class="quiz-option" data-answer="c">C. Eliminar todas las instrucciones de impresión.</button>
+          </div>
+          <div id="quiz-result" role="status" class="quiz-result"></div>
+          <p class="mini-note">Conversá tu respuesta con un compañero antes de continuar.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="descubrir">
+      <div class="section-heading"><span class="step">02</span><h2>Descubrí la solución: funciones</h2></div>
+      <p class="section-description">Una función permite agrupar instrucciones con un nombre y ejecutarlas cada vez que la llamamos.</p>
+      <div class="two-cols">
+        <article class="surface">
+          <span class="tag">Modelado docente</span>
+          <h3>Definir no es ejecutar</h3>
+          <div class="code-wrap"><div class="code-head"><span>funcion_simple.py</span><button type="button" class="copy-code" data-copy="funcion-simple">Copiar</button></div><pre id="funcion-simple"><code>def mostrar_menu():
+    print("=== MINECRAFT ===")
+    print("1. Ver inventario")
+    print("2. Recolectar")
+
+mostrar_menu()</code></pre></div>
+          <p style="margin-top:13px"><strong><code>def</code></strong> crea la función; <strong><code>mostrar_menu()</code></strong> la llama. El cuerpo de la función lleva sangría.</p>
+          <div class="question">Predicción: si quitamos la última línea, ¿se muestra el menú?</div>
+          <details><summary>Ver respuesta y explicación</summary><div class="hint">No. Python conoce la función, pero no ejecuta su contenido hasta que alguien la llama con <code>mostrar_menu()</code>.</div></details>
+        </article>
+        <article class="surface">
+          <span class="tag">Ilustración / esquema</span>
+          <h3>¿Cómo circula la información?</h3>
+          <div class="visual-flow" aria-label="Llamada, función y resultado">
+            <div class="flow-part"><small>LLAMADA</small><code>mostrar_inventario(10)</code></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-part"><small>PARÁMETRO</small><code>esmeraldas = 10</code></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-part"><small>EFECTO</small><code>print(...)</code></div>
+          </div>
+          <div class="code-wrap"><div class="code-head"><span>funcion_con_parametro.py</span><button class="copy-code" data-copy="funcion-param" type="button">Copiar</button></div><pre id="funcion-param"><code>def mostrar_inventario(esmeraldas):
+    print("=== INVENTARIO ===")
+    print("Esmeraldas:", esmeraldas)
+
+mostrar_inventario(10)
+mostrar_inventario(25)</code></pre></div>
+          <p style="margin-top:14px">La misma función muestra valores diferentes sin duplicar su código.</p>
+        </article>
+      </div>
+      <div class="surface" style="margin-top:20px">
+        <span class="tag">Un paso más: devolver valores</span>
+        <h3>¿Qué cambia entre <code>print</code> y <code>return</code>?</h3>
+        <div class="two-cols" style="align-items:start">
+          <div><p><strong><code>print()</code></strong> muestra un mensaje en pantalla.</p><div class="code-wrap"><div class="code-head">Muestra un valor</div><pre><code>def saludar():
+    print("Hola")
+
+saludar()</code></pre></div></div>
+          <div><p><strong><code>return</code></strong> entrega un resultado para utilizarlo fuera de la función.</p><div class="code-wrap"><div class="code-head">Devuelve un valor</div><pre><code>def recolectar(esmeraldas):
+    return esmeraldas + 5
+
+esmeraldas = 10
+esmeraldas = recolectar(esmeraldas)</code></pre></div></div>
+        </div>
+        <div class="notice">Importante: <code>return</code> no actualiza por sí solo la variable externa. Por eso se escribe <code>esmeraldas = recolectar(esmeraldas)</code> para guardar el nuevo valor.</div>
+      </div>
+    </section>
+
+    <section class="section" id="misiones">
+      <div class="section-heading"><span class="step">03</span><h2>Construí tu sistema en Python</h2></div>
+      <p class="section-description">Descargá el código de partida, abrilo en tu editor y resolvé estas tres misiones. Primero intentá hacerlo solo; utilizá las pistas si las necesitás.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:21px"><button type="button" class="btn btn-primary" id="download-starter">⬇ Descargar código inicial .py</button><a href="#pruebas" class="btn btn-muted" style="background:#33543e">Ir a las pruebas finales ↓</a></div>
+      <div class="mission-grid">
+        <article class="mission">
+          <span class="mission-id">MISIÓN 01 · SIN PARÁMETROS</span><h3>El menú reutilizable</h3>
+          <p>Transformá las cuatro instrucciones que muestran las opciones del menú en una función.</p>
+          <div class="task-req"><strong>Tu función debe:</strong> llamarse <code>mostrar_menu()</code>, imprimir las cuatro opciones y ejecutarse una vez en cada vuelta del bucle.</div>
+          <details><summary>💡 Pista: ¿cómo empezar?</summary><div class="hint">Escribí <code>def mostrar_menu():</code> antes del <code>while</code>. Mové adentro los <code>print()</code> del menú. Después, dentro del <code>while</code>, usá <code>mostrar_menu()</code>.</div></details>
+        </article>
+        <article class="mission">
+          <span class="mission-id">MISIÓN 02 · PARÁMETROS</span><h3>Un solo inventario</h3>
+          <p>Actualmente, el inventario se imprime en distintos lugares. Reemplazá esos bloques por una función.</p>
+          <div class="task-req"><strong>Tu función debe:</strong> llamarse <code>mostrar_inventario(esmeraldas)</code>, recibir el saldo e imprimirlo. Llamala donde sea necesario.</div>
+          <details><summary>💡 Pista: ¿qué recibe?</summary><div class="hint">Podés usar <code>def mostrar_inventario(esmeraldas):</code> y, en la opción 1, llamarla con <code>mostrar_inventario(esmeraldas)</code>. El nombre dentro de los paréntesis representa el dato recibido.</div></details>
+        </article>
+        <article class="mission">
+          <span class="mission-id">MISIÓN 03 · RETURN</span><h3>Recolectá esmeraldas</h3>
+          <p>En lugar de sumar directamente en el menú, creá una función que calcule el nuevo saldo y lo devuelva.</p>
+          <div class="task-req"><strong>Tu función debe:</strong> llamarse <code>recolectar(esmeraldas)</code>, sumar 5 y devolver el saldo nuevo con <code>return</code>. Guardá lo que devuelve.</div>
+          <details><summary>💡 Pista: una línea clave</summary><div class="hint">Dentro de la función: <code>return esmeraldas + 5</code>. Al llamarla: <code>esmeraldas = recolectar(esmeraldas)</code>. Revisá la diferencia entre <code>print</code> y <code>return</code>.</div></details>
+        </article>
+      </div>
+      <div class="surface" style="margin-top:18px">
+        <span class="tag">Producto esperado</span>
+        <h3>Tu menú final conserva estas opciones</h3>
+        <div class="table-scroll"><table><thead><tr><th>Opción</th><th>Acción</th><th>Resultado esperado</th></tr></thead><tbody>
+          <tr><td>1</td><td>Consultar</td><td>Mostrar la cantidad actual de esmeraldas usando la función de inventario.</td></tr>
+          <tr><td>2</td><td>Recolectar</td><td>Sumar 5 mediante la función que devuelve el nuevo saldo.</td></tr>
+          <tr><td>3</td><td>Comprar pico</td><td>Restar 8 si alcanza el saldo; informar si no alcanza.</td></tr>
+          <tr><td>4</td><td>Salir</td><td>Finalizar el bucle y el programa.</td></tr>
+        </tbody></table></div>
+        <p class="mini-note">El desafío principal es organizar en funciones las opciones 1 y 2 y el menú. La compra puede permanecer en el condicional durante esta primera clase.</p>
+      </div>
+    </section>
+
+    <section class="section" id="pruebas">
+      <div class="section-heading"><span class="step">04</span><h2>Probá, explicá y entregá</h2></div>
+      <p class="section-description">Antes de compartir el archivo, verificá que el programa siga funcionando después de reorganizarlo.</p>
+      <div class="two-cols" style="margin-bottom:18px">
+        <div class="surface"><span class="tag">Pruebas manuales</span><h3>Secuencia de verificación</h3>
+          <div class="table-scroll"><table><thead><tr><th>Acción</th><th>Saldo esperado</th></tr></thead><tbody><tr><td>Inicio del juego</td><td>10</td></tr><tr><td>Recolectar una vez (+5)</td><td>15</td></tr><tr><td>Comprar pico (−8)</td><td>7</td></tr><tr><td>Recolectar otra vez (+5)</td><td>12</td></tr></tbody></table></div>
+          <p class="mini-note">Comprobá también que la opción 4 termine el programa y que una opción inválida muestre un aviso.</p>
+        </div>
+        <div class="surface"><span class="tag">Desafío opcional</span><h3>¿Podés mejorar la tienda?</h3>
+          <p>Si finalizás las tres misiones, intentá convertir la compra en una función <code>comprar_pico(esmeraldas)</code> que compruebe si el jugador tiene suficientes esmeraldas y devuelva el saldo correspondiente.</p>
+          <div class="question">Pregunta de reflexión: ¿qué parte del programa se vuelve más fácil de comprender cuando las operaciones tienen nombres propios?</div>
+        </div>
+      </div>
+      <div class="deliver">
+        <div><h3>✅ Checklist del programador</h3><p>Marcá cada evidencia cuando la hayas comprobado en tu editor de Python.</p>
+          <div class="checks" id="checklist">
+            <label class="check"><input type="checkbox"><span>Creé <code>mostrar_menu()</code> y la llamo desde el bucle.</span></label>
+            <label class="check"><input type="checkbox"><span>Creé <code>mostrar_inventario(esmeraldas)</code> y recibe un parámetro.</span></label>
+            <label class="check"><input type="checkbox"><span>Creé <code>recolectar(esmeraldas)</code> con <code>return</code>.</span></label>
+            <label class="check"><input type="checkbox"><span>Actualicé el saldo guardando el valor devuelto.</span></label>
+            <label class="check"><input type="checkbox"><span>Probé el menú, la compra, la recolección y la salida.</span></label>
+          </div>
+          <p><strong>Entrega:</strong> guardá tu trabajo como <code>mision_esmeralda.py</code> y subilo a la tarea indicada por el docente en CREA, junto con una respuesta breve: <em>«¿Para qué sirve una función en mi programa?»</em></p>
+        </div>
+        <aside class="progress-box" aria-live="polite"><span style="font-size:11px;color:#aacdb0;font-weight:900;letter-spacing:.1em">PROGRESO DE LA MISIÓN</span><div class="progress-number" id="progress-number">0 / 5</div><div class="progress-track" role="progressbar" aria-label="Avance de la lista de verificación" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5" id="progress-role"><div class="progress-fill" id="progress-fill"></div></div><p style="margin:15px 0 0;color:#aacdb0;font-size:12px">Cada casilla representa una comprobación real de tu programa.</p></aside>
+      </div>
+    </section>
+    <section class="section" id="cierre">
+      <div class="section-heading"><span class="step">05</span><h2>Cierre: pensá como programador</h2></div>
+      <p class="section-description">Compartí tus respuestas en voz alta o por escrito antes de finalizar.</p>
+      <div class="mission-grid">
+        <article class="mission"><span class="mission-id">PREGUNTA 01</span><h3>¿Qué problema resolvimos?</h3><p>Explicá por qué repetir código puede dificultar mantener un sistema.</p></article>
+        <article class="mission"><span class="mission-id">PREGUNTA 02</span><h3>¿Definir es lo mismo que llamar?</h3><p>Describí qué ocurre cuando escribimos <code>def</code> pero nunca llamamos la función.</p></article>
+        <article class="mission"><span class="mission-id">PREGUNTA 03</span><h3>¿Por qué usamos <code>return</code>?</h3><p>Explicá qué pasaría con el saldo si llamamos <code>recolectar(esmeraldas)</code> sin guardar su resultado.</p></article>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">MISIÓN ESMERALDA · Recurso educativo para aprender funciones en Python · <a href="https://docs.python.org/es/3/tutorial/controlflow.html#defining-functions" target="_blank" rel="noopener noreferrer">Documentación oficial de Python</a></footer>
+<script>
+  (function () {
+    'use strict';
+    var balance = 10;
+    var countEl = document.getElementById('gem-count');
+    var feedback = document.getElementById('demo-feedback');
+    document.getElementById('collect').addEventListener('click', function () {
+      balance += 5;
+      countEl.textContent = String(balance);
+      feedback.textContent = '¡Recolectaste 5 esmeraldas! Nuevo saldo: ' + balance + '.';
+    });
+    document.getElementById('buy').addEventListener('click', function () {
+      if (balance < 8) {feedback.textContent = 'No alcanza el saldo: necesitás 8 esmeraldas.';return;}
+      balance -= 8;
+      countEl.textContent = String(balance);
+      feedback.textContent = '¡Compraste un pico por 8 esmeraldas! Saldo: ' + balance + '.';
+    });
+    var quizFeedback = document.getElementById('quiz-result');
+    document.querySelectorAll('[data-answer]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        var correct = el.getAttribute('data-answer') === 'b';
+        quizFeedback.classList.add('is-visible');
+        quizFeedback.textContent = correct ? '¡Exacto! Esa acción reutilizable se llama función. La definimos una vez y la llamamos cuando sea necesaria.' : 'Pensá en cómo evitar editar 15 copias. La opción correcta es B: crear una función para reutilizar el mismo bloque.';
+      });
+    });
+    function copyText(text, button) {
+      function done(){var old=button.textContent;button.textContent='¡Copiado!';setTimeout(function(){button.textContent=old;},1450);}
+      if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(text).then(done,function(){fallback();});}
+      else {fallback();}
+      function fallback(){var input=document.createElement('textarea');input.value=text;input.style.position='fixed';input.style.left='-10000px';document.body.appendChild(input);input.select();try{document.execCommand('copy');done();}catch(e){button.textContent='Seleccioná el código';}document.body.removeChild(input);}
+    }
+    document.querySelectorAll('[data-copy]').forEach(function(btn){btn.addEventListener('click',function(){var node=document.getElementById(btn.getAttribute('data-copy'));if(node){copyText(node.innerText,btn);}});});
+    var checks = Array.prototype.slice.call(document.querySelectorAll('#checklist input[type="checkbox"]'));
+    function updateProgress(){var number = checks.filter(function(input){return input.checked;}).length;document.getElementById('progress-number').textContent=number+' / '+checks.length;document.getElementById('progress-fill').style.width=(number/checks.length*100)+'%';document.getElementById('progress-role').setAttribute('aria-valuenow',String(number));}
+    checks.forEach(function(input){input.addEventListener('change',updateProgress);});
+    updateProgress();
+    var starter = [
+      '# MISION ESMERALDA - CODIGO DE PARTIDA',
+      '# El programa funciona. Tu tarea es organizarlo con funciones.',
+      '',
+      'esmeraldas = 10',
+      '',
+      'while True:',
+      '    print("\\n=== CENTRO DE OPERACIONES ===")',
+      '    print("1. Consultar inventario")',
+      '    print("2. Recolectar (+5)")',
+      '    print("3. Comprar pico (8)")',
+      '    print("4. Salir")',
+      '',
+      '    opcion = input("Elige una opcion: ")',
+      '',
+      '    if opcion == "1":',
+      '        print("=== INVENTARIO ===")',
+      '        print("Esmeraldas:", esmeraldas)',
+      '',
+      '    elif opcion == "2":',
+      '        esmeraldas += 5',
+      '        print("Recolectaste 5 esmeraldas")',
+      '        print("=== INVENTARIO ===")',
+      '        print("Esmeraldas:", esmeraldas)',
+      '',
+      '    elif opcion == "3":',
+      '        if esmeraldas >= 8:',
+      '            esmeraldas -= 8',
+      '            print("Compraste un pico")',
+      '        else:',
+      '            print("No tienes suficientes esmeraldas")',
+      '',
+      '    elif opcion == "4":',
+      '        print("Hasta la proxima")',
+      '        break',
+      '',
+      '    else:',
+      '        print("Opcion no valida")',
+      ''
+    ].join('\n');
+    document.getElementById('download-starter').addEventListener('click',function(){var blob=new Blob([starter],{type:'text/x-python;charset=utf-8'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='mision_esmeralda_inicio.py';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},3000);});
+  })();
+</script>
+</body>
+</html>
